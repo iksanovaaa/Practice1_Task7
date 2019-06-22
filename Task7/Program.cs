@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 //	Сгенерировать все сочетания из N элементов по K без повторений и выписать их в лексикографическом порядке.
@@ -11,10 +7,9 @@ namespace Task7
 {
     class Program
     {
-        static char[] masN;
-        static char[] masK;
         static int[] arr;
-        static int N, K, count;
+        static int N, K; 
+        static double count;
         static void Main(string[] args)
         {
             bool end = false;
@@ -23,22 +18,21 @@ namespace Task7
                 N = CheckInt("Введите N", true);
                 K = CheckInt("Введите K", false);
                 count = CountNum(N, K);
-                Console.WriteLine("Количество сочетаний из {0} по {1}: {2}", N, K, count);
+                if (count <= 0) Console.WriteLine("Количество сочетаний из {0} по {1} слишком велико", N, K);
+                else Console.WriteLine("Количество сочетаний из {0} по {1}: {2}", N, K, count);
                 arr = new int[K];
-                masN = new char[N];
-                masK = new char[K];
-                //CreateMas(N, K);
                 Console.WriteLine("Сочетания из {0} по {1} в лексикографическом порядке без повторений:", N, K);
                 CreateCombs(0, 0);
                 end = CheckKey();
             } while (!end);
         }
+        //генератор сочетаний
         public static void CreateCombs(int pos, int maxUsed)
         {
             if (pos == K)
             {
                 PrintMas(arr);
-            } /*if (pos > K) { }*/
+            } 
             else
                 for (int i = maxUsed + 1; i <= N; i++)
                 {
@@ -46,6 +40,7 @@ namespace Task7
                     CreateCombs(pos + 1, i);
                 }
         }
+        //вывод сочетания
         public static void PrintMas(int[] arr)
         {
             for (int i = 0; i < arr.Length; i++)
@@ -54,6 +49,7 @@ namespace Task7
                 if ((i + 1) % K == 0) Console.WriteLine();
             }
         }
+        //вычисление факториала
         public static int GetFactorial(int num, bool notAll)
         {
             int res = num;
@@ -77,6 +73,7 @@ namespace Task7
                 }
             return res;
         }
+        //подсчет количества сочетаний
         public static int CountNum(int N, int K)
         {
             int res = 0;
@@ -85,6 +82,7 @@ namespace Task7
             else res = GetFactorial(N, true) / GetFactorial(K, false);
             return res;
         }
+        //проверка ввода целого числа
         public static int CheckInt(string s, bool isN)
         {
             int num;
@@ -100,6 +98,7 @@ namespace Task7
             } while (!okay);
             return num;
         }
+        //вывод соощений об ошибке
         public static void PrintError(string s)
         {
             Console.BackgroundColor = ConsoleColor.DarkRed;
@@ -120,20 +119,6 @@ namespace Task7
             Console.Clear();
             return end;
         }
-        public static void CreateMas(int N, int K)
-        {
-            int j = (int)'A';
-            for (int i = 0; i < N; i++)
-            {
-                if (i <= 9) masN[i] = Char.Parse(i.ToString());
-                else
-                {
-                    masN[i] = (char)j;
-                    j++;
-                }
-            }
-            for (int i = 0; i < K; i++)
-                masK[i] = '0';
-        }
+        
     }
 }
